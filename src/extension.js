@@ -2,33 +2,51 @@
 // Import the module and reference it with the alias vscode in your code below
 const vscode = require('vscode');
 
-// this method is called when your extension is activated
-// your extension is activated the very first time the command is executed
+//import FileOps from './fileOps';
 
-/**
- * @param {vscode.ExtensionContext} context
- */
-function activate(context) {
+class VSCodeLinterExtension {
+	constructor(){
+		this.context = undefined;
+		this.file = undefined;
+	};
 
-	// Use the console to output diagnostic information (console.log) and errors (console.error)
-	// This line of code will only be executed once when your extension is activated
-	console.log('Congratulations, your extension "vscode-linter" is now active!');
+	/**
+	 * @param {vscode.ExtensionContext} context 
+	 */
+	async activate(context) {
+		this.context = context;
+		//this.file = new FileOps();
 
-	// The command has been defined in the package.json file
-	// Now provide the implementation of the command with  registerCommand
-	// The commandId parameter must match the command field in package.json
-	let disposable = vscode.commands.registerCommand('vscode-linter.helloWorld', function () {
-		// The code you place here will be executed every time your command is executed
+		this.registerGlobalCommands();
 
-		// Display a message box to the user
-		vscode.window.showInformationMessage('Hello World from VSCode-Linter!');
-	});
+		console.log("Congrats, Your VSCode Linter extension has been activated!!!");
+	}
 
-	context.subscriptions.push(disposable);
+	/**
+	 * @param {vscode.ExtensionContext} context 
+	 */
+	async deactivate(context) {
+
+	}
+
+	registerGlobalCommands() {
+		let disposable = vscode.commands.registerCommand('vscode-linter.helloWorld', function(){
+			vscode.window.showInformationMessage("Hello World!");
+		});
+		this.context.subscriptions.push(disposable);
+	}
 }
 
-// this method is called when your extension is deactivated
-function deactivate() {}
+const extension = new VSCodeLinterExtension();
+
+function activate(context) {
+	extension.activate(context);
+	return extension;
+}
+
+function deactivate(context) {
+	extension.deactivate(context);
+}
 
 module.exports = {
 	activate,
