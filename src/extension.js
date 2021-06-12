@@ -1,13 +1,14 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 const vscode = require('vscode');
+//const FileOps = require('./fileOps');
+const Linter = require('./linter');
 
-//import FileOps from './fileOps';
 
 class VSCodeLinterExtension {
 	constructor(){
 		this.context = undefined;
-		this.file = undefined;
+		this.linter = undefined;
 	};
 
 	/**
@@ -15,9 +16,10 @@ class VSCodeLinterExtension {
 	 */
 	async activate(context) {
 		this.context = context;
-		//this.file = new FileOps();
+		this.linter = Linter;
 
 		this.registerGlobalCommands();
+		this.linter.init();
 
 		console.log("Congrats, Your VSCode Linter extension has been activated!!!");
 	}
@@ -48,6 +50,7 @@ function deactivate(context) {
 	extension.deactivate(context);
 }
 
+// Export activate and deactivate hooks for VS Code registration
 module.exports = {
 	activate,
 	deactivate
